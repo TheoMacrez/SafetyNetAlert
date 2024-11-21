@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/medicalRecord")
+@RequestMapping("/medicalrecord")
 @RequiredArgsConstructor
 public class MedicalRecordController {
 
@@ -24,14 +24,14 @@ public class MedicalRecordController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMedicalRecord);
     }
 
-    @PutMapping
-    public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        MedicalRecord updatedMedicalRecord = medicalRecordService.updateMedicalRecord(medicalRecord);
+    @PutMapping("/{firstName}/{lastName}")
+    public ResponseEntity<MedicalRecord> updateMedicalRecord(@PathVariable String firstName, @PathVariable String lastName,@RequestBody MedicalRecord medicalRecord) {
+        MedicalRecord updatedMedicalRecord = medicalRecordService.updateMedicalRecord(firstName,lastName,medicalRecord);
         return ResponseEntity.ok(updatedMedicalRecord);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteMedicalRecord(@RequestParam String firstName, @RequestParam String lastName) {
+    @DeleteMapping("/{firstName}/{lastName}")
+    public ResponseEntity<Void> deleteMedicalRecord(@PathVariable String firstName, @PathVariable String lastName) {
         medicalRecordService.deleteMedicalRecord(firstName, lastName);
         return ResponseEntity.noContent().build();
     }

@@ -2,6 +2,7 @@ package com.openclassrooms.SafetyNetAlert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNetAlert.model.Firestation;
+import com.openclassrooms.SafetyNetAlert.model.MedicalRecord;
 import com.openclassrooms.SafetyNetAlert.model.Person;
 import com.openclassrooms.SafetyNetAlert.service.FirestationService;
 import com.openclassrooms.SafetyNetAlert.util.JsonDataLoader;
@@ -35,10 +36,7 @@ class FirestationServiceTest {
 
     @BeforeEach
     void setUp() throws IOException {
-//        // Préparer une copie fraîche de testData.json avant chaque test
-//        File source = new File("src/test/resources/testDataOriginal.json");
-//        File destination = new File("src/test/resources/testData.json");
-//        FileSystemUtils.copyRecursively(source, destination);
+
 
         // Chemin vers le fichier original dans resources
         Path originalFilePath = Path.of("src/test/resources/testDataOriginal.json");
@@ -71,6 +69,20 @@ class FirestationServiceTest {
         List<Firestation> firestations = firestationService.getAllFirestations();
         assertThat(firestations).contains(newFirestation);
         assertThat(firestations.size()).isEqualTo(14);
+    }
+
+    @Test
+    void updateFirestation_ShouldUpdateExistingFirestation() {
+        Firestation newFirestation = new Firestation("123 New Ave", "5");
+        firestationService.addFirestation(newFirestation);
+
+        newFirestation.setStation("6");
+
+        firestationService.updateFirestation(newFirestation);
+
+        Firestation firestationTest = firestationService.getFirestationByAddress("123 New Ave");
+
+        assertThat(firestationTest.getStation()).isEqualTo("6");
     }
 
     @Test

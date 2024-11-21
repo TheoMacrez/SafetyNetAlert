@@ -36,10 +36,7 @@ class PersonServiceTest {
 
     @BeforeEach
     void setUp() throws IOException {
-//        // Préparer une copie fraîche de testData.json avant chaque test
-//        File source = new File("resources/testDataOriginal.json");
-//        File destination = new File("resources/testData.json");
-//        FileSystemUtils.copyRecursively(source, destination);
+
 
         // Chemin vers le fichier original dans resources
         Path originalFilePath = Path.of("src/test/resources/testDataOriginal.json");
@@ -77,11 +74,16 @@ class PersonServiceTest {
 
     @Test
     void updatePerson_ShouldUpdateExistingPerson() {
-        Person updatedPerson = new Person("Jane", "Smith", "Updated Address", "Updated City", "99999", "555-9999", "jane.updated@example.com");
-        Person person = personService.updatePerson("Jane", "Smith", updatedPerson);
+        Person newPerson = new Person("Jane", "Smith", "new Address", "new City", "99999", "555-9999", "jane.updated@example.com");
+        personService.addPerson(newPerson);
+        newPerson.setAddress("Updated Address");
+        newPerson.setCity("Updated City");
+        personService.updatePerson("Jane", "Smith", newPerson);
 
-        assertThat(person.getAddress()).isEqualTo("Updated Address");
-        assertThat(person.getCity()).isEqualTo("Updated City");
+        Person personToTest = personService.getPerson("Jane","Smith");
+
+        assertThat(personToTest.getAddress()).isEqualTo("Updated Address");
+        assertThat(personToTest.getCity()).isEqualTo("Updated City");
     }
 
     @Test

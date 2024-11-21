@@ -3,6 +3,7 @@ package com.openclassrooms.SafetyNetAlert.service;
 
 import com.openclassrooms.SafetyNetAlert.model.MedicalRecord;
 
+import com.openclassrooms.SafetyNetAlert.model.Person;
 import com.openclassrooms.SafetyNetAlert.util.JsonDataLoader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,20 @@ public class MedicalRecordService {
         return medicalRecord;
     }
 
-    public MedicalRecord updateMedicalRecord(MedicalRecord updatedRecord) {
-        updatedRecord.setBirthdate(updatedRecord.getBirthdate());
-        updatedRecord.setMedications(updatedRecord.getMedications());
-        updatedRecord.setAllergies(updatedRecord.getAllergies());
+    public MedicalRecord updateMedicalRecord(String firstName, String lastName,MedicalRecord updatedRecord) {
+
+        List<MedicalRecord> medicalRecords = jsonDataLoader.getDataContainer().getMedicalRecords();
+
+        MedicalRecord medicalRecord =medicalRecords.stream()
+                .filter(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("MedicalRecords not found"));
+
+        medicalRecord.setBirthdate(updatedRecord.getBirthdate());
+        medicalRecord.setMedications(updatedRecord.getMedications());
+        medicalRecord.setAllergies(updatedRecord.getAllergies());
         jsonDataLoader.saveData();
-        return updatedRecord;
+        return medicalRecord;
     }
 
     public void deleteMedicalRecord(String firstName, String lastName) {

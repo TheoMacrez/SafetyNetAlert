@@ -39,6 +39,7 @@ public class PersonService {
 
     public Person updatePerson(String firstName, String lastName, Person updatedPerson) {
         List<Person> persons = jsonDataLoader.getDataContainer().getPersons();
+
         Person person = persons.stream()
                 .filter(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName))
                 .findFirst()

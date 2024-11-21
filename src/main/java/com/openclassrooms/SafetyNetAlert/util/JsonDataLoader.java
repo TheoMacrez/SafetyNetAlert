@@ -26,9 +26,6 @@ public class JsonDataLoader {
     @Setter
     private DataContainer dataContainer; // Contient toutes vos données
 
-
-
-
     public JsonDataLoader(ObjectMapper objectMapper,
                           @Value("${com.openclassrooms.safety-net-alert.dataFilePath}") String filePath
                            ) {
@@ -42,9 +39,9 @@ public class JsonDataLoader {
     private DataContainer loadData() {
         try {
 
-            return objectMapper.readValue(filePath, DataContainer.class);
+            return objectMapper.readValue(new File(filePath), DataContainer.class);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load JSON data", e);
+            throw new RuntimeException("Failed to load JSON data from file: " + filePath + ". Ensure the file is properly formatted. Error: " + e.getMessage(), e);
         }
     }
 

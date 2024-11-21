@@ -4,6 +4,7 @@ package com.openclassrooms.SafetyNetAlert;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNetAlert.model.Firestation;
 import com.openclassrooms.SafetyNetAlert.model.MedicalRecord;
+import com.openclassrooms.SafetyNetAlert.model.Person;
 import com.openclassrooms.SafetyNetAlert.service.MedicalRecordService;
 import com.openclassrooms.SafetyNetAlert.util.JsonDataLoader;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,10 +37,7 @@ class MedicalRecordServiceTest {
 
     @BeforeEach
     void setUp() throws IOException {
-//        // Préparer une copie fraîche de testData.json avant chaque test
-//        File source = new File("src/test/resources/testDataOriginal.json");
-//        File destination = new File("src/test/resources/testData.json");
-//        FileSystemUtils.copyRecursively(source, destination);
+
 
         // Chemin vers le fichier original dans resources
         Path originalFilePath = Path.of("src/test/resources/testDataOriginal.json");
@@ -72,6 +70,23 @@ class MedicalRecordServiceTest {
         List<MedicalRecord> medicalRecords = medicalRecordService.getAllMedicalRecords();
         assertThat(medicalRecords).contains(newRecord);
         assertThat(medicalRecords.size()).isEqualTo(24);
+    }
+
+    @Test
+    void updateMedicalRecord_ShouldUpdateExistingMedicalRecord() {
+        MedicalRecord newMedicalRecord = new MedicalRecord("Jane", "Smith","01/01/1990", List.of("med1","med2"),List.of("allergy1","allergy2"));
+        medicalRecordService.addMedicalRecord(newMedicalRecord);
+
+        newMedicalRecord.setBirthdate("01/01/1991");
+        newMedicalRecord.setMedications(List.of("new med1","new med2"));
+        newMedicalRecord.setAllergies(List.of("new allergy1","new allergy2"));
+        medicalRecordService.updateMedicalRecord("Jane", "Smith", newMedicalRecord);
+
+        MedicalRecord medicalRecordToTest = medicalRecordService.getMedicalRecordByName("Jane","Smith");
+
+        assertThat(medicalRecordToTest.getBirthdate()).isEqualTo("01/01/1991");
+        assertThat(medicalRecordToTest.getMedications()).isEqualTo(List.of("new med1","new med2"));
+        assertThat(medicalRecordToTest.getAllergies()).isEqualTo(List.of("new allergy1","new allergy2"));
     }
 
     @Test
