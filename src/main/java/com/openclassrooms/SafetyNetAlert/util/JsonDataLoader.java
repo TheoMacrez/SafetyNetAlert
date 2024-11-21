@@ -5,7 +5,10 @@ import com.openclassrooms.SafetyNetAlert.model.DataContainer;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,34 +17,32 @@ import java.io.IOException;
 @Service
 public class JsonDataLoader {
 
-    @Autowired
+
     private final ObjectMapper objectMapper; // Utilisé pour désérialiser le JSON
+
+    private final String filePath;
 
     @Getter
     @Setter
     private DataContainer dataContainer; // Contient toutes vos données
 
-    @Autowired
-    private CustomProperties propFilePath;
 
-    public JsonDataLoader(ObjectMapper objectMapper) {
+
+
+    public JsonDataLoader(ObjectMapper objectMapper,
+                          @Value("${com.openclassrooms.safety-net-alert.dataFilePath}") String filePath
+                           ) {
+
         this.objectMapper = objectMapper;
+        this.filePath = filePath;
         this.dataContainer = loadData();
+
     }
 
     private DataContainer loadData() {
         try {
-            assert propFilePath != null;
-            return objectMapper.readValue(new File(propFilePath.getDataFilePath()), DataContainer.class);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load JSON data", e);
-        }
-    }
 
-    public void loadDataFromFile(String filePath) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            dataContainer = objectMapper.readValue(new File(filePath), DataContainer.class);
+            return objectMapper.readValue(filePath, DataContainer.class);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load JSON data", e);
         }
@@ -50,8 +51,8 @@ public class JsonDataLoader {
     public void saveData()
     {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(new File(propFilePath.getDataFilePath()), dataContainer);
+
+            objectMapper.writeValue(new File(filePath), dataContainer);
             loadData();
         } catch (IOException e) {
             throw new RuntimeException("Failed to save JSON data", e);

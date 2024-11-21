@@ -7,6 +7,7 @@ import com.openclassrooms.SafetyNetAlert.service.PersonService;
 import com.openclassrooms.SafetyNetAlert.util.JsonDataLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,6 +18,7 @@ import org.springframework.util.FileSystemUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -27,19 +29,30 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @AutoConfigureMockMvc
 class PersonServiceTest {
 
-    @Autowired
-    private JsonDataLoader jsonDataLoader;
-
     private PersonService personService;
+
+    @TempDir
+    Path tempDir;
 
     @BeforeEach
     void setUp() throws IOException {
-        // Préparer une copie fraîche de testData.json avant chaque test
-        File source = new File("src/test/resources/testDataOriginal.json");
-        File destination = new File("src/test/resources/testData.json");
-        FileSystemUtils.copyRecursively(source, destination);
+//        // Préparer une copie fraîche de testData.json avant chaque test
+//        File source = new File("resources/testDataOriginal.json");
+//        File destination = new File("resources/testData.json");
+//        FileSystemUtils.copyRecursively(source, destination);
 
-        jsonDataLoader.loadDataFromFile("src/test/resources/testData.json");
+        // Chemin vers le fichier original dans resources
+        Path originalFilePath = Path.of("src/test/resources/testDataOriginal.json");
+
+        // Chemin vers le fichier temporaire dans le répertoire temporaire
+        Path tempFilePath = tempDir.resolve("testData.json");
+
+        // Copier le fichier original dans le répertoire temporaire
+        Files.copy(originalFilePath, tempFilePath);
+
+        // Initialiser JsonDataLoader avec le chemin du fichier temporaire
+        JsonDataLoader jsonDataLoader = new JsonDataLoader(new ObjectMapper(), tempFilePath.toString());
+
         personService = new PersonService(jsonDataLoader);
     }
 
