@@ -1,16 +1,14 @@
-package com.openclassrooms.SafetyNetAlert;
+package com.openclassrooms.SafetyNetAlert.util;
 
 import com.openclassrooms.SafetyNetAlert.model.DataContainer;
-import com.openclassrooms.SafetyNetAlert.util.JsonDataLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

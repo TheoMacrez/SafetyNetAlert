@@ -1,25 +1,18 @@
-package com.openclassrooms.SafetyNetAlert;
+package com.openclassrooms.SafetyNetAlert.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNetAlert.model.Person;
-import com.openclassrooms.SafetyNetAlert.service.PersonService;
 import com.openclassrooms.SafetyNetAlert.util.JsonDataLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.util.FileSystemUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

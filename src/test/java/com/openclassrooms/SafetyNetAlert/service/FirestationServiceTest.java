@@ -1,10 +1,7 @@
-package com.openclassrooms.SafetyNetAlert;
+package com.openclassrooms.SafetyNetAlert.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNetAlert.model.Firestation;
-import com.openclassrooms.SafetyNetAlert.model.MedicalRecord;
-import com.openclassrooms.SafetyNetAlert.model.Person;
-import com.openclassrooms.SafetyNetAlert.service.FirestationService;
 import com.openclassrooms.SafetyNetAlert.util.JsonDataLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +9,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.FileSystemUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

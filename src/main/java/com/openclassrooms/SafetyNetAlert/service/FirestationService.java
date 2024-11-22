@@ -1,8 +1,13 @@
 package com.openclassrooms.SafetyNetAlert.service;
 
 
+import com.openclassrooms.SafetyNetAlert.dto.StationCoveragePersonInfo;
+import com.openclassrooms.SafetyNetAlert.dto.StationCoverageResponse;
 import com.openclassrooms.SafetyNetAlert.model.Firestation;
 
+import com.openclassrooms.SafetyNetAlert.model.MedicalRecord;
+import com.openclassrooms.SafetyNetAlert.model.Person;
+import com.openclassrooms.SafetyNetAlert.util.CalculateAgeUtil;
 import com.openclassrooms.SafetyNetAlert.util.JsonDataLoader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +56,57 @@ public class FirestationService {
         firestations.removeIf(firestation -> firestation.getAddress().equals(address)); // Supprime la caserne
         jsonDataLoader.saveData();
     }
+
+    public StationCoverageResponse getPersonsCoveredByStation(int stationNumber) {
+        // Récupère les adresses desservies par cette station
+        List<String> addresses = jsonDataLoader.getDataContainer().getFirestations().stream()
+                .filter(firestation -> Integer.parseInt(firestation.getStation()) == stationNumber)
+                .map(Firestation::getAddress)
+                .toList();
+
+        // Récupère les personnes vivant à ces adresses
+        List<Person> persons = jsonDataLoader.getDataContainer().getPersons().stream()
+                .filter(person -> addresses.contains(person.getAddress()))
+                .toList();
+
+        // Transforme les personnes en objets PersonInfo
+        List<StationCoveragePersonInfo> personInfos = persons.stream()
+                .map(person -> new StationCoveragePersonInfo(
+                        person.getFirstName(),
+                        person.getLastName(),
+                        person.getAddress(),
+                        person.getPhone()
+                ))
+                .toList();
+
+        // Compte les adultes et les enfants
+        int numberOfAdults = 0;
+        int numberOfChildren = 0;
+        for (Person person : persons) {
+            MedicalRecord record = jsonDataLoader.getDataContainer().getMedicalRecords().stream()
+                    .filter(medicalRecord -> medicalRecord.getFirstName().equals(person.getFirstName())
+                            && medicalRecord.getLastName().equals(person.getLastName()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (record != null) {
+
+                if (CalculateAgeUtil.isUnder18(record.getBirthdate())) {
+                    numberOfChildren++;
+                } else {
+                    numberOfAdults++;
+                }
+            }
+        }
+
+        // Crée et retourne la réponse
+        StationCoverageResponse response = new StationCoverageResponse();
+        response.setPersons(personInfos);
+        response.setNumberOfAdults(numberOfAdults);
+        response.setNumberOfChildren(numberOfChildren);
+        return response;
+    }
+
 
 
 }

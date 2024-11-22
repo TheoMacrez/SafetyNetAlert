@@ -1,5 +1,6 @@
 package com.openclassrooms.SafetyNetAlert.controller;
 
+import com.openclassrooms.SafetyNetAlert.dto.StationCoverageResponse;
 import com.openclassrooms.SafetyNetAlert.model.Firestation;
 import com.openclassrooms.SafetyNetAlert.service.FirestationService;
 import com.openclassrooms.SafetyNetAlert.service.PersonService;
@@ -34,6 +35,12 @@ public class FirestationController {
     public ResponseEntity<Void> deleteFirestation(@PathVariable String address) {
         firestationService.deleteFirestation(address);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<StationCoverageResponse> getPersonsCoveredByStation(@RequestParam int stationNumber) {
+        StationCoverageResponse response = firestationService.getPersonsCoveredByStation(stationNumber);
+        return ResponseEntity.ok(response);
     }
 }
 
