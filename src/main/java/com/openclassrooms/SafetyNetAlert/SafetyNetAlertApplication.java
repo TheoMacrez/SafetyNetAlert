@@ -1,17 +1,13 @@
 package com.openclassrooms.SafetyNetAlert;
 
-import com.openclassrooms.SafetyNetAlert.util.CustomProperties;
 //import org.apache.logging.log4j.LogManager;
 //mport org.apache.logging.log4j.core.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class SafetyNetAlertApplication {
 
-	@Autowired
-	private CustomProperties props;
 
 	//private static final Logger logger = (Logger) LogManager.getLogger(SafetyNetAlertApplication.class);
 	public static void main(String[] args) {

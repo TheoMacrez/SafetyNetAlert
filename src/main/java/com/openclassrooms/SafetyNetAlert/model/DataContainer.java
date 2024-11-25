@@ -12,7 +12,6 @@ import java.util.List;
 public class DataContainer {
     private List<Person> persons;
     private List<Firestation> firestations;
-    @JsonProperty("medicalrecords")
     private List<MedicalRecord> medicalRecords;
 }
 
