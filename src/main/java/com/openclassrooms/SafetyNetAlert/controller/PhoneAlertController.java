@@ -14,6 +14,13 @@ public class PhoneAlertController {
     @Autowired
     private PhoneAlertService phoneAlertService;
 
+    /**
+     * Récupère les numéros de téléphone des habitants couverts par une caserne de pompiers spécifique.
+     *
+     * @param firestation Le numéro de la caserne de pompiers.
+     * @return Une liste des numéros de téléphone associés aux habitants desservis par cette caserne (HTTP 200),
+     *         ou un message d'erreur (HTTP 404) si aucune donnée n'est trouvée.
+     */
     @GetMapping
     public ResponseEntity<Object> getPhoneNumbersByFirestation(@RequestParam int firestation) {
         try {

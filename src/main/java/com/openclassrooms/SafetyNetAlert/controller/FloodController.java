@@ -16,6 +16,13 @@ public class FloodController {
     @Autowired
     private FloodService floodService;
 
+    /**
+     * Récupère les foyers desservis par les casernes de pompiers spécifiées.
+     *
+     * @param stations Une liste des numéros des stations de pompiers.
+     * @return Une réponse contenant les informations des foyers desservis (HTTP 200)
+     *         ou un message d'erreur (HTTP 404) si aucune donnée n'est trouvée.
+     */
     @GetMapping("/stations")
     public ResponseEntity<Object> getHouseholdsByStations(@RequestParam List<Integer> stations) {
         try {
@@ -26,4 +33,5 @@ public class FloodController {
         }
     }
 }
+
 

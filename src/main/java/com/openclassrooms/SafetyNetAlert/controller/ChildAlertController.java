@@ -17,6 +17,14 @@ public class ChildAlertController {
     @Autowired
     private final ChildAlertService childAlertService;
 
+    /**
+     * Endpoint pour récupérer les informations des enfants et son foyer
+     * à une adresse donnée.
+     *
+     * @param address L'adresse pour laquelle récupérer les informations.
+     * @return Une réponse contenant les enfants du foyer,
+     *         ou un message d'erreur si l'adresse est introuvable.
+     */
     @GetMapping("/childAlert")
     public ResponseEntity<Object> getChildrenByAddress(@RequestParam String address) {
         try {

@@ -19,6 +19,14 @@ public class PersonInfoLastNameController {
     @Autowired
     private PersonInfoLastNameService personInfoService;
 
+
+    /**
+     * Récupère les informations des personnes ayant le nom de famille spécifié.
+     *
+     * @param lastName Le nom de famille des personnes recherchées.
+     * @return Une liste des personnes correspondant au nom de famille donné (HTTP 200),
+     *         ou un message d'erreur (HTTP 404) si aucune personne n'est trouvée.
+     */
     @GetMapping
     public ResponseEntity<List<PersonInfoLastNameResponse>> getPersonsByLastName(@RequestParam String lastName) {
         try {
