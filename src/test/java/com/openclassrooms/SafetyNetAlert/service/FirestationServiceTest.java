@@ -53,7 +53,7 @@ class FirestationServiceTest {
         List<Firestation> firestations = firestationService.getAllFirestations();
 
         assertThat(firestations).isNotEmpty();
-        assertThat(firestations.size()).isEqualTo(13); // Exemple : supposez 10 casernes dans testData.json
+        assertThat(firestations.size()).isEqualTo(14); // Exemple : supposez 10 casernes dans testData.json
     }
 
     @Test
@@ -63,7 +63,7 @@ class FirestationServiceTest {
 
         List<Firestation> firestations = firestationService.getAllFirestations();
         assertThat(firestations).contains(newFirestation);
-        assertThat(firestations.size()).isEqualTo(14);
+        assertThat(firestations.size()).isEqualTo(15);
     }
 
     @Test

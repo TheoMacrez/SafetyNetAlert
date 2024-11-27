@@ -1,6 +1,5 @@
-package com.openclassrooms.SafetyNetAlert.controller;
+package com.openclassrooms.SafetyNetAlert.util;
 
-import com.openclassrooms.SafetyNetAlert.util.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 

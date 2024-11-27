@@ -7,21 +7,23 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
+
 @RestController
-@RequestMapping("/fire")
-public class FireController {
+@RequestMapping("/flood")
+public class FloodController {
 
     @Autowired
-    private FireService fireService;
+    private FloodService floodService;
 
-    @GetMapping
-    public ResponseEntity<Object> getResidentsByAddress(@RequestParam String address) {
-
+    @GetMapping("/stations")
+    public ResponseEntity<Object> getHouseholdsByStations(@RequestParam List<Integer> stations) {
         try {
-            FireResponse response = fireService.getResidentsByAddress(address);
+            FloodResponse response = floodService.getHouseholdsByStations(stations);
             return ResponseEntity.ok(response);
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }
+

@@ -37,8 +37,7 @@
         { "address":"112 Steppes Pl", "station":"4" },
         { "address":"947 E. Rose Dr", "station":"1" },
         { "address":"748 Townings Dr", "station":"3" },
-        { "address":"951 LoneTree Rd", "station":"2" },
-        { "address": "Empty Street", "station": "3" }
+        { "address":"951 LoneTree Rd", "station":"2" }
 	],
     "medicalRecords": [
         { "firstName":"John", "lastName":"Boyd", "birthdate":"03/06/1984", "medications":["aznol:350mg", "hydrapermazol:100mg"], "allergies":["nillacilan"] },
