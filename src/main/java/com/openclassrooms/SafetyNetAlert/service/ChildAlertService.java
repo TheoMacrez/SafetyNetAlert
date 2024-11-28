@@ -6,17 +6,31 @@ import com.openclassrooms.SafetyNetAlert.model.MedicalRecord;
 import com.openclassrooms.SafetyNetAlert.model.Person;
 import com.openclassrooms.SafetyNetAlert.util.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
+/**
+ * Service pour gérer les alertes enfants.
+ * Il permet de récupérer les informations des enfants vivant à une adresse donnée,
+ * ainsi que les autres membres du foyer.
+ */
 @Service
 @RequiredArgsConstructor
 public class ChildAlertService {
 
+    @Autowired
     private final JsonDataLoader jsonDataLoader;
 
+    /**
+     * Récupère les informations des enfants et des autres membres du foyer vivant à une adresse donnée.
+     *
+     * @param address l'adresse à analyser.
+     * @return une réponse contenant les informations des enfants et des membres du foyer.
+     * @throws ResourceNotFoundException si aucune personne n'est trouvée à l'adresse spécifiée.
+     */
     public ChildAlertResponse getChildrenByAddress(String address) {
         // Récupère toutes les personnes vivant à l'adresse
         List<Person> personsAtAddress = jsonDataLoader.getDataContainer().getPersons().stream()

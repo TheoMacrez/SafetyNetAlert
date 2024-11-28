@@ -8,12 +8,24 @@ import org.springframework.stereotype.*;
 
 import java.util.*;
 
+/**
+ * Service pour gérer les informations relatives aux incendies.
+ * Permet de récupérer les résidents vivant à une adresse spécifique et leur lien avec la caserne de pompiers.
+ */
 @Service
 public class FireService {
 
     @Autowired
     private JsonDataLoader jsonDataLoader;
 
+    /**
+     * Récupère les informations des résidents vivant à une adresse spécifique,
+     * ainsi que le numéro de la caserne de pompiers desservant cette adresse.
+     *
+     * @param address l'adresse à analyser.
+     * @return une réponse contenant le numéro de la caserne et les informations des résidents.
+     * @throws ResourceNotFoundException si l'adresse n'est associée à aucune caserne ou si aucun résident n'est trouvé.
+     */
     public FireResponse getResidentsByAddress(String address) {
         // Trouve la caserne de pompiers correspondant à l'adresse
         String stationNumber = jsonDataLoader.getDataContainer().getFirestations().stream()

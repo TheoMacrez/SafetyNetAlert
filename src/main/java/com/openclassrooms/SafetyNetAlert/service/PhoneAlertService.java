@@ -8,11 +8,23 @@ import org.springframework.stereotype.*;
 
 import java.util.*;
 
+/**
+ * Service pour la gestion des alertes téléphoniques des résidents.
+ * Permet de récupérer les numéros de téléphone des résidents desservis par une caserne de pompiers.
+ */
 @Service
 public class PhoneAlertService {
 
     @Autowired
     private JsonDataLoader jsonDataLoader;
+
+    /**
+     * Récupère les numéros de téléphone des résidents desservis par une caserne.
+     *
+     * @param firestationNumber le numéro de la caserne pour laquelle on souhaite récupérer les numéros de téléphone des résidents.
+     * @return un objet {@link PhoneAlertResponse} contenant la liste des numéros de téléphone des résidents.
+     * @throws ResourceNotFoundException si aucune caserne ne correspond au numéro donné ou si aucun résident n'est trouvé pour cette caserne.
+     */
 
     public PhoneAlertResponse getPhoneNumbersByFirestation(int firestationNumber) {
 

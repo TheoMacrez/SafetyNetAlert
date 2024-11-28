@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//@WebMvcTest(FirestationController.class)
+
 @SpringBootTest(properties = "com.openclassrooms.safety-net-alert.dataFilePath=src/test/resources/testDataOriginal.json")
 @AutoConfigureMockMvc
 class FirestationControllerTest {
@@ -31,10 +31,7 @@ class FirestationControllerTest {
     @Mock
     private FirestationService firestationService;
 
-//    @BeforeEach
-//    void setUp() {
-//        MockitoAnnotations.openMocks(this);
-//    }
+
 
     @Test
     void testGetPersonsByFirestationNumber() throws Exception {
@@ -73,17 +70,5 @@ class FirestationControllerTest {
                 .andExpect(content().string("Aucune adresse trouvée pour la station numéro : " + stationNumber));
     }
 
-
-//    @Test
-//    void testUnexpectedException() throws Exception {
-//        // Simule une exception inattendue
-//        when(firestationService.getPersonsCoveredByStation(anyInt())).thenThrow(new RuntimeException("Erreur inattendue"));
-//
-//        mockMvc.perform(get("/firestation")
-//                        .param("stationNumber", "1")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isInternalServerError()) // Vérifie que le statut est 500
-//                .andExpect(content().string("Erreur inattendue"));
-//    }
 }
 

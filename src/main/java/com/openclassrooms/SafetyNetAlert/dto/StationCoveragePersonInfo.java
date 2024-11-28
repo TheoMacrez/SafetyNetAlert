@@ -1,12 +1,16 @@
 package com.openclassrooms.SafetyNetAlert.dto;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
 
+/**
+ * DTO (Data Transfer Object) représentant les informations spécifiques d'une personne.
+ * Utilisé pour transmettre des données spécifiques concernant les personnes concernés par une caserne donnée.
+ */
+@Data
+@AllArgsConstructor
 public class StationCoveragePersonInfo {
 
     private String firstName;
@@ -14,11 +18,5 @@ public class StationCoveragePersonInfo {
     private String address;
     private String phone;
 
-    public StationCoveragePersonInfo(String firstName, String lastName, String address, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.phone = phone;
-    }
 
 }

@@ -10,12 +10,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service pour la gestion des informations des personnes par nom de famille.
+ * Permet de récupérer les informations des personnes basées sur leur nom de famille.
+ */
 @Service
 public class PersonInfoLastNameService {
 
     @Autowired
     private JsonDataLoader jsonDataLoader;
 
+    /**
+     * Récupère une liste de personnes basées sur le nom de famille.
+     *
+     * @param lastName le nom de famille à rechercher.
+     * @return une liste de {@link PersonInfoLastNameResponse} contenant les informations des personnes trouvées.
+     * @throws ResourceNotFoundException si aucune personne avec le nom de famille donné n'est trouvée.
+     */
     public List<PersonInfoLastNameResponse> getPersonsByLastName(String lastName) {
         // Filtrer les personnes par nom de famille
         List<Person> persons = jsonDataLoader.getDataContainer().getPersons().stream()

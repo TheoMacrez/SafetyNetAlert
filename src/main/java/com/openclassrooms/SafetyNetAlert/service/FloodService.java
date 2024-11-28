@@ -9,12 +9,25 @@ import org.springframework.stereotype.*;
 
 import java.util.*;
 
+/**
+ * Service pour gérer les informations relatives aux foyers par caserne de pompiers
+ * en cas d'inondation.
+ * Ce service fournit une liste détaillée des résidents couverts par les casernes spécifiques.
+ */
 @Service
 public class FloodService {
 
     @Autowired
     private JsonDataLoader jsonDataLoader;
 
+    /**
+     * Récupère les foyers desservis par les casernes de pompiers spécifiées.
+     *
+     * @param stationNumbers une liste des numéros de casernes pour lesquelles récupérer les foyers.
+     * @return un objet {@link FloodResponse} contenant une carte des adresses et leurs résidents respectifs.
+     * @throws ResourceNotFoundException si aucune adresse ou aucun dossier médical n'est trouvé pour les casernes spécifiées.
+     * @throws DataFormatException si les numéros de casernes dans les données JSON ne sont pas dans un format valide.
+     */
     public FloodResponse getHouseholdsByStations(List<Integer> stationNumbers) {
         // 1. Récupère les adresses desservies par les casernes
         List<String> addresses = jsonDataLoader.getDataContainer().getFirestations().stream()

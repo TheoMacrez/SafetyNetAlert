@@ -15,6 +15,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service pour gérer les opérations relatives aux casernes de pompiers.
+ * Fournit des fonctionnalités pour gérer les casernes, récupérer les informations des personnes couvertes,
+ * et effectuer des opérations CRUD sur les casernes.
+ */
 @Service
 @RequiredArgsConstructor
 public class FirestationService {
@@ -22,10 +27,22 @@ public class FirestationService {
     @Autowired
     private final JsonDataLoader jsonDataLoader;
 
+    /**
+     * Récupère la liste de toutes les casernes de pompiers.
+     *
+     * @return la liste des casernes.
+     */
     public List<Firestation> getAllFirestations() {
         return jsonDataLoader.getDataContainer().getFirestations(); // Récupère la liste des casernes
     }
 
+    /**
+     * Récupère une caserne de pompiers par son adresse.
+     *
+     * @param address l'adresse de la caserne à récupérer.
+     * @return la caserne correspondante.
+     * @throws RuntimeException si aucune caserne n'est trouvée pour l'adresse donnée.
+     */
     public Firestation getFirestationByAddress(String address) {
         return jsonDataLoader.getDataContainer().getFirestations().stream()
                 .filter(firestation -> firestation.getAddress().equals(address))
@@ -33,12 +50,25 @@ public class FirestationService {
                 .orElseThrow(() -> new RuntimeException("Firestation not found for address: " + address));
     }
 
+    /**
+     * Ajoute une nouvelle caserne de pompiers.
+     *
+     * @param firestation la caserne à ajouter.
+     * @return la caserne ajoutée.
+     */
     public Firestation addFirestation(Firestation firestation) {
         jsonDataLoader.getDataContainer().getFirestations().add(firestation); // Ajoute la caserne
         jsonDataLoader.saveData();
         return firestation;
     }
 
+    /**
+     * Met à jour une caserne de pompiers existante.
+     *
+     * @param updatedFirestation la caserne mise à jour.
+     * @return la caserne mise à jour.
+     * @throws RuntimeException si aucune caserne n'est trouvée pour l'adresse donnée.
+     */
     public Firestation updateFirestation(Firestation updatedFirestation) {
         Firestation existingFirestation = jsonDataLoader.getDataContainer().getFirestations().stream()
                 .filter(firestation -> firestation.getAddress().equals(updatedFirestation.getAddress()))
@@ -50,12 +80,28 @@ public class FirestationService {
         return existingFirestation;
     }
 
+    /**
+     * Supprime une caserne de pompiers par son adresse.
+     *
+     * @param address l'adresse de la caserne à supprimer.
+     */
     public void deleteFirestation(String address) {
         List<Firestation> firestations = jsonDataLoader.getDataContainer().getFirestations();
         firestations.removeIf(firestation -> firestation.getAddress().equals(address)); // Supprime la caserne
         jsonDataLoader.saveData();
     }
 
+    /**
+     * Récupère les informations des personnes couvertes par une caserne de pompiers spécifique,
+     * ainsi que le nombre d'adultes et d'enfants.
+     *
+     * @param stationNumber le numéro de la caserne.
+     * @return une réponse contenant les informations des personnes couvertes et les statistiques.
+     * @throws IllegalArgumentException si le numéro de station est invalide (non positif).
+     * @throws ResourceNotFoundException si aucune adresse ou personne n'est trouvée pour la station donnée,
+     *                                   ou si des dossiers médicaux sont manquants.
+     * @throws DataFormatException si le numéro de station dans les données JSON est au format incorrect.
+     */
     public StationCoverageResponse getPersonsCoveredByStation(int stationNumber) {
 
         // Vérifie si le numéro de station est valide

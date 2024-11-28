@@ -14,6 +14,10 @@ import java.io.File;
 import java.io.IOException;
 
 
+/**
+ * Service pour charger et sauvegarder des données JSON dans un fichier.
+ * Utilise un {@link ObjectMapper} pour la désérialisation et la sérialisation des objets à partir et vers le format JSON.
+ */
 @Service
 public class JsonDataLoader {
 
@@ -24,8 +28,15 @@ public class JsonDataLoader {
 
     @Getter
     @Setter
-    private DataContainer dataContainer; // Contient toutes vos données
+    private DataContainer dataContainer; // Contient toutes les données
 
+    /**
+     * Constructeur qui initialise l'instance de {@link JsonDataLoader} avec un {@link ObjectMapper} et le chemin du fichier de données.
+     * Charge également les données au moment de la création de l'instance.
+     *
+     * @param objectMapper l'objet utilisé pour la désérialisation des données JSON.
+     * @param filePath le chemin du fichier JSON où les données sont stockées.
+     */
     public JsonDataLoader(ObjectMapper objectMapper,
                           @Value("${com.openclassrooms.safety-net-alert.dataFilePath}") String filePath
                            ) {
@@ -36,6 +47,12 @@ public class JsonDataLoader {
 
     }
 
+    /**
+     * Charge les données depuis le fichier JSON et les désérialise dans un objet {@link DataContainer}.
+     *
+     * @return un objet {@link DataContainer} contenant les données chargées.
+     * @throws RuntimeException si le fichier ne peut pas être chargé ou si une erreur de désérialisation se produit.
+     */
     private DataContainer loadData() {
         try {
 
@@ -45,6 +62,11 @@ public class JsonDataLoader {
         }
     }
 
+    /**
+     * Sauvegarde les données actuelles dans le fichier JSON.
+     *
+     * @throws RuntimeException si la sauvegarde des données échoue.
+     */
     public void saveData()
     {
         try {
