@@ -1,23 +1,20 @@
 package com.openclassrooms.SafetyNetAlert.controller;
 
-import com.openclassrooms.SafetyNetAlert.dto.StationCoveragePersonInfo;
+import com.openclassrooms.SafetyNetAlert.model.*;
 import com.openclassrooms.SafetyNetAlert.service.FirestationService;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
 import org.springframework.boot.test.context.*;
-import org.springframework.boot.test.mock.mockito.*;
-import org.springframework.http.MediaType;
+
+import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -30,6 +27,86 @@ class FirestationControllerTest {
 
     @Mock
     private FirestationService firestationService;
+
+    @Mock
+    private FirestationController firestationController;
+
+
+    /**
+     * Test de l'ajout et update d'une nouvelle caserne (POST et PUT).
+     */
+    @Test
+    void testAddAndUpdateFirestation() throws Exception {
+        String newFirestation = """
+                {
+                    "address": "1304 Created St",
+                    "station": 4
+                }
+                """;
+
+        mockMvc.perform(post("/firestation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newFirestation))
+                .andExpect(status().isCreated()) // Vérifie que le statut est 201
+                .andExpect(jsonPath("$.address").value("1304 Created St")) // Vérifie l'adresse
+                .andExpect(jsonPath("$.station").value(4)); // Vérifie le numéro de station
+
+        String updatedFirestation = """
+                {
+                    "address": "1304 Created St",
+                    "station": 5
+                }
+                """;
+
+        mockMvc.perform(put("/firestation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedFirestation))
+                .andExpect(status().isOk()) // Vérifie que le statut est 200// Vérifie l'adresse
+                .andExpect(jsonPath("$.station").value(5));
+
+        String addressToDelete = "1304 Created St";
+
+        mockMvc.perform(delete("/firestation/{address}", addressToDelete)
+                .contentType(MediaType.APPLICATION_JSON));
+    }
+
+
+
+    /**
+     * Test de suppression d'une caserne (DELETE).
+     */
+    @Test
+    void testDeleteFirestation() throws Exception {
+
+        String newFirestation = """
+                {
+                    "address": "1304 Created St",
+                    "station": 4
+                }
+                """;
+        mockMvc.perform(post("/firestation")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(newFirestation));
+
+        String addressToDelete = "1304 Created St";
+
+        mockMvc.perform(delete("/firestation/{address}", addressToDelete)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent()); // Vérifie que le statut est 204
+    }
+
+    /**
+     * Test de suppression d'une caserne inexistante (DELETE).
+     */
+    @Test
+    void testDeleteNonExistentFirestation() throws Exception {
+        String nonExistentAddress = "Unknown Address";
+
+        mockMvc.perform(delete("/firestation/{address}", nonExistentAddress)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound()); // Vérifie que le statut est 404
+
+    }
 
 
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * Controller pour gérer les opérations CRUD sur les dossiers médicaux (MedicalRecord).
  */
 @RestController
-@RequestMapping("/medicalrecord")
+@RequestMapping("/medicalRecord")
 @RequiredArgsConstructor
 public class MedicalRecordController {
 
@@ -45,6 +45,10 @@ public class MedicalRecordController {
                                                              @PathVariable String lastName,
                                                              @RequestBody MedicalRecord medicalRecord) {
         MedicalRecord updatedMedicalRecord = medicalRecordService.updateMedicalRecord(firstName, lastName, medicalRecord);
+        if (updatedMedicalRecord == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null); // Ou un message d'erreur plus descriptif
+        }
         return ResponseEntity.ok(updatedMedicalRecord);
     }
 
@@ -58,7 +62,11 @@ public class MedicalRecordController {
     @DeleteMapping("/{firstName}/{lastName}")
     public ResponseEntity<Void> deleteMedicalRecord(@PathVariable String firstName,
                                                     @PathVariable String lastName) {
-        medicalRecordService.deleteMedicalRecord(firstName, lastName);
+        boolean isDeleted = medicalRecordService.deleteMedicalRecord(firstName, lastName);
+        if (!isDeleted) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .build(); // Retourne 404 si aucune caserne n'est trouvée
+        }
         return ResponseEntity.noContent().build();
     }
 }

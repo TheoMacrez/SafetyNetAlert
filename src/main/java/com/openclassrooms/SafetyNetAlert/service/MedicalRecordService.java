@@ -92,10 +92,14 @@ public class MedicalRecordService {
      * @param firstName le prénom de la personne.
      * @param lastName le nom de la personne.
      */
-    public void deleteMedicalRecord(String firstName, String lastName) {
+    public boolean deleteMedicalRecord(String firstName, String lastName) {
         List<MedicalRecord> medicalRecords = jsonDataLoader.getDataContainer().getMedicalRecords();
-        medicalRecords.removeIf(record -> record.getFirstName().equals(firstName) && record.getLastName().equals(lastName));
-        jsonDataLoader.saveData();
+        boolean isDeleted = medicalRecords.removeIf(record -> record.getFirstName().equals(firstName) && record.getLastName().equals(lastName));
+        if(isDeleted)
+        {
+            jsonDataLoader.saveData();
+        }
+        return isDeleted;
     }
 
 

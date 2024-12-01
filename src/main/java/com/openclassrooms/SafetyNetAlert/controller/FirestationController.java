@@ -42,6 +42,10 @@ public class FirestationController {
     @PutMapping
     public ResponseEntity<Firestation> updateFirestation(@RequestBody Firestation firestation) {
         Firestation updatedFirestation = firestationService.updateFirestation(firestation);
+        if (updatedFirestation == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null); // Ou un message d'erreur plus descriptif
+        }
         return ResponseEntity.ok(updatedFirestation);
     }
 
@@ -53,7 +57,13 @@ public class FirestationController {
      */
     @DeleteMapping("/{address}")
     public ResponseEntity<Void> deleteFirestation(@PathVariable String address) {
-        firestationService.deleteFirestation(address);
+        boolean isDeleted = firestationService.deleteFirestation(address);
+
+        if (!isDeleted) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .build(); // Retourne 404 si aucune caserne n'est trouvée
+        }
+
         return ResponseEntity.noContent().build();
     }
 

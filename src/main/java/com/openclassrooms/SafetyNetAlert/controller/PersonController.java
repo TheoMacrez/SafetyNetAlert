@@ -1,6 +1,6 @@
 package com.openclassrooms.SafetyNetAlert.controller;
 
-import com.openclassrooms.SafetyNetAlert.model.Person;
+import com.openclassrooms.SafetyNetAlert.model.*;
 import com.openclassrooms.SafetyNetAlert.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,13 @@ public class PersonController {
                                                @PathVariable String lastName,
                                                @RequestBody Person updatedPerson) {
         Person person = personService.updatePerson(firstName, lastName, updatedPerson);
+        if (person == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null); // Ou un message d'erreur plus descriptif
+        }
+
         return ResponseEntity.ok(person);
+
     }
 
     /**
@@ -57,7 +63,11 @@ public class PersonController {
     @DeleteMapping("/{firstName}/{lastName}")
     public ResponseEntity<Void> deletePerson(@PathVariable String firstName,
                                              @PathVariable String lastName) {
-        personService.deletePerson(firstName, lastName);
+        boolean isDeleted = personService.deletePerson(firstName, lastName);
+        if (!isDeleted) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .build(); // Retourne 404 si aucune caserne n'est trouvée
+        }
         return ResponseEntity.noContent().build();
     }
 }

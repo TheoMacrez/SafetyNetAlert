@@ -85,10 +85,17 @@ public class FirestationService {
      *
      * @param address l'adresse de la caserne à supprimer.
      */
-    public void deleteFirestation(String address) {
+    public boolean deleteFirestation(String address) {
         List<Firestation> firestations = jsonDataLoader.getDataContainer().getFirestations();
-        firestations.removeIf(firestation -> firestation.getAddress().equals(address)); // Supprime la caserne
-        jsonDataLoader.saveData();
+        // Vérifie si une caserne correspond à l'adresse
+        boolean isDeleted = firestations.removeIf(firestation -> firestation.getAddress().equals(address));
+
+        if (isDeleted) {
+            // Sauvegarde les données uniquement si une suppression a été effectuée
+            jsonDataLoader.saveData();
+        }
+
+        return isDeleted; // Indique si une suppression a eu lieu
     }
 
     /**

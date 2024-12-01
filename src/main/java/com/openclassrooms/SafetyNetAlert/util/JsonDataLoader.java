@@ -1,6 +1,6 @@
 package com.openclassrooms.SafetyNetAlert.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import com.openclassrooms.SafetyNetAlert.model.DataContainer;
 import lombok.Getter;
 import lombok.Setter;
@@ -70,8 +70,8 @@ public class JsonDataLoader {
     public void saveData()
     {
         try {
-
-            objectMapper.writeValue(new File(filePath), dataContainer);
+            ObjectWriter writer = objectMapper.writerWithDefaultPrettyPrinter();
+            writer.writeValue(new File(filePath), dataContainer);
             loadData();
         } catch (IOException e) {
             throw new RuntimeException("Failed to save JSON data", e);

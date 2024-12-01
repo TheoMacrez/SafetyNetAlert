@@ -94,10 +94,14 @@ public class PersonService {
      * @param lastName le nom de famille de la personne à supprimer.
      * @throws RuntimeException si la personne n'est pas trouvée dans la source de données.
      */
-    public void deletePerson(String firstName, String lastName) {
+    public boolean deletePerson(String firstName, String lastName) {
         List<Person> persons = jsonDataLoader.getDataContainer().getPersons();
-        persons.removeIf(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName));
-        jsonDataLoader.saveData(); // Sauvegarde dans le fichier JSON
+        boolean isDeleted = persons.removeIf(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName));
+        if (isDeleted) {
+            // Sauvegarde les données uniquement si une suppression a été effectuée
+            jsonDataLoader.saveData();
+        }
+        return isDeleted;
     }
 
 
