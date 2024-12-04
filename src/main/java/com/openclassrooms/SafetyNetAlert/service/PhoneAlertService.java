@@ -3,6 +3,7 @@ package com.openclassrooms.SafetyNetAlert.service;
 import com.openclassrooms.SafetyNetAlert.dto.*;
 import com.openclassrooms.SafetyNetAlert.model.*;
 import com.openclassrooms.SafetyNetAlert.util.*;
+import lombok.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
@@ -13,10 +14,11 @@ import java.util.*;
  * Permet de récupérer les numéros de téléphone des résidents desservis par une caserne de pompiers.
  */
 @Service
+@RequiredArgsConstructor
 public class PhoneAlertService {
 
     @Autowired
-    private JsonDataLoader jsonDataLoader;
+    private final JsonDataLoader jsonDataLoader;
 
     /**
      * Récupère les numéros de téléphone des résidents desservis par une caserne.

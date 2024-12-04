@@ -15,10 +15,11 @@ import java.util.*;
  * Ce service fournit une liste détaillée des résidents couverts par les casernes spécifiques.
  */
 @Service
+@RequiredArgsConstructor
 public class FloodService {
 
     @Autowired
-    private JsonDataLoader jsonDataLoader;
+    private final JsonDataLoader jsonDataLoader;
 
     /**
      * Récupère les foyers desservis par les casernes de pompiers spécifiées.

@@ -2,6 +2,7 @@ package com.openclassrooms.SafetyNetAlert.service;
 
 import com.openclassrooms.SafetyNetAlert.model.Person;
 import com.openclassrooms.SafetyNetAlert.util.*;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +10,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CommunityEmailService {
 
     @Autowired
-    private JsonDataLoader jsonDataLoader;
+    private final JsonDataLoader jsonDataLoader;
 
     /**
      * Récupère les adresses email des habitants d'une ville donnée.

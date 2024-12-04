@@ -3,6 +3,7 @@ package com.openclassrooms.SafetyNetAlert.service;
 import com.openclassrooms.SafetyNetAlert.dto.*;
 import com.openclassrooms.SafetyNetAlert.model.*;
 import com.openclassrooms.SafetyNetAlert.util.*;
+import lombok.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
@@ -13,10 +14,11 @@ import java.util.*;
  * Permet de récupérer les résidents vivant à une adresse spécifique et leur lien avec la caserne de pompiers.
  */
 @Service
+@RequiredArgsConstructor
 public class FireService {
 
     @Autowired
-    private JsonDataLoader jsonDataLoader;
+    private final JsonDataLoader jsonDataLoader;
 
     /**
      * Récupère les informations des résidents vivant à une adresse spécifique,
@@ -43,7 +45,7 @@ public class FireService {
             throw new ResourceNotFoundException("Aucun résident trouvé pour l'adresse : " + address);
         }
 
-        // Transforme les personnes en objets FireResidentInfo
+        // Transforme les personnes en objets FirePersonInfo
         List<FirePersonInfo> residents = persons.stream().map(person -> {
             MedicalRecord record = jsonDataLoader.getDataContainer().getMedicalRecords().stream()
                     .filter(medicalRecord -> medicalRecord.getFirstName().equals(person.getFirstName())

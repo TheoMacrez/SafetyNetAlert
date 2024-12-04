@@ -4,6 +4,7 @@ import com.openclassrooms.SafetyNetAlert.dto.*;
 import com.openclassrooms.SafetyNetAlert.model.MedicalRecord;
 import com.openclassrooms.SafetyNetAlert.model.Person;
 import com.openclassrooms.SafetyNetAlert.util.*;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,11 @@ import java.util.stream.Collectors;
  * Permet de récupérer les informations des personnes basées sur leur nom de famille.
  */
 @Service
+@RequiredArgsConstructor
 public class PersonInfoLastNameService {
 
     @Autowired
-    private JsonDataLoader jsonDataLoader;
+    private final JsonDataLoader jsonDataLoader;
 
     /**
      * Récupère une liste de personnes basées sur le nom de famille.
@@ -37,7 +39,7 @@ public class PersonInfoLastNameService {
             throw new ResourceNotFoundException("Aucune personne trouvée avec le nom de famille : " + lastName);
         }
 
-        // Transformer les personnes en objets PersonInfoResponse
+        // Transformer les personnes en objets PersonInfoLastNameResponse
         return persons.stream().map(person -> {
             MedicalRecord record = jsonDataLoader.getDataContainer().getMedicalRecords().stream()
                     .filter(medicalRecord -> medicalRecord.getFirstName().equals(person.getFirstName())
